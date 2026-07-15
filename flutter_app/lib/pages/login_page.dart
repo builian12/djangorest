@@ -74,12 +74,27 @@ class _LoginPageState extends State<LoginPage> {
                                         prefixIcon: Icon(Icons.lock),
                                     ),
                                 ),
+                                const SizedBox(height: 30),
+                                sizedBox(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                        onPressed: isLoading ? null : IniciarSesion,
+                                        child: isLoading 
+                                            ? const CircularProgressIndicator(
+                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                            )
+                                            : const Text('Iniciar Sesion', 
+                                            style: TextStyle(fontSize: 18),
+                                            ),
+                                    ),
+                                ),
                             
-                            ]
-                        )
-                    )
+                            ],
+                        ),
+                    ),
 
-                )
+                ),
             )
         }
     }
