@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiService {
+  // IP de la PC en la red - debe ser accesible desde el celular
+  // Para Windows usar 10.0.2.2 (emulador) o localhost
   final String baseUrl = 'http://172.16.117.148:8000/api';
 
   Future<Map<String, dynamic>> login(String username, String password) async {
@@ -32,21 +34,19 @@ class ApiService {
       throw Exception(
         'No se pudo conectar al servidor.\n'
         'Verifica:\n'
-        '1. Que el servidor Django esté corriendo\n'
-        '2. Que la IP $baseUrl sea correcta\n'
-        '3. Que estés en la misma red WiFi',
+        '1. Que el backend este corriendo\n'
+        '2. IP: 172.16.117.148:8000\n'
+        '3. Misma red WiFi entre PC y celular',
       );
     } on http.ClientException {
       throw Exception(
         'No se pudo conectar al servidor.\n'
-        'Verifica que el backend esté activo.',
+        'Verifica que el backend este activo.',
       );
     } on TimeoutException {
       throw Exception(
         'Tiempo de espera agotado.\n'
-        'El servidor no responde. Asegúrate de que:\n'
-        '- El backend esté corriendo en $baseUrl\n'
-        '- Estés en la misma red WiFi',
+        'El servidor no responde.',
       );
     } catch (e) {
       rethrow;
