@@ -17,22 +17,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> iniciarSesion() async {
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor ingrese usuario y contraseña'),
-        ),
-      );
+      _mostrarError('Por favor ingrese usuario y contraseña');
       return;
     }
     setState(() {
       _isLoading = true;
     });
     try {
-      final respuesta = await _apiService.login(
+      await _apiService.login(
         _usernameController.text,
         _passwordController.text,
       );
-      print(respuesta);
       if (!mounted) return;
       // Redirigir al dashboard con el nombre de usuario
       Navigator.pushReplacement(
@@ -45,11 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
+      _mostrarError(e.toString().replaceFirst('Exception: ', ''));
     } finally {
       if (mounted) {
         setState(() {
@@ -57,6 +48,28 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+  }
+
+  void _mostrarError(String mensaje) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 28),
+            SizedBox(width: 10),
+            Text('Error'),
+          ],
+        ),
+        content: Text(mensaje),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Aceptar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -101,8 +114,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : iniciarSesion,
                   child: _isLoading
-                      ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text('Conectando...', style: TextStyle(fontSize: 18)),
+                          ],
                         )
                       : const Text(
                           'Iniciar Sesión',
