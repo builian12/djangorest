@@ -9,7 +9,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Dashboard Inicial Mobil'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: [
