@@ -45,10 +45,13 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'categoria',
 ]
-#jwt
+#jwt    
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
@@ -59,6 +62,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "API REST DJANGO",
     "DESCRIPTION": "API REST DJANGO WEB Y MOVIL",
     "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
